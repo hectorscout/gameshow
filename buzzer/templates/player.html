@@ -1,8 +1,19 @@
-<html>
-<head>
-</head>
-<body>
-  <div><input type="text"></div>
-  <div><button>Let's Go!</button></div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block scriptsTag %}
+{% include "playerScripts.js" %}
+{% endblock scriptsTag %}
+
+{% block body %}
+
+<!-- ko if:  !id() -->
+<div><input id="nameInput" type="text"></div>
+<div><button data-bind="click: $root.register">Let's Go!</button></div>
+<!-- /ko -->
+
+<!-- ko if: id() -->
+<div><button data-bind="{click: $root.buzz, disable: waiting}">BUZZ!!!!</button></div>
+<!-- /ko -->
+
+<div data-bind="{visible: name, text:'You are ' + name() + '.'}"></div>
+{% endblock body %}

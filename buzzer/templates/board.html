@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block scriptsTag %}
+{% include "boardScripts.js" %}
+{% endblock scriptsTag %}
+
+{% block body %}
+
+<h1>Players</h1>
+<div data-bind="foreach: players">
+  <div data-bind="text: name + ': ' + score"></div>
+</div>
+
+{% endblock body %}

@@ -1,5 +1,11 @@
 # Django settings for gameshow project.
+import os
 
+#import djcelery
+#djcelery.setup_loader()
+#BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+
+PROJECT_PATH = '/home/tysonh/gameshow'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -90,7 +96,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -103,6 +109,7 @@ ROOT_URLCONF = 'gameshow.urls'
 WSGI_APPLICATION = 'gameshow.wsgi.application'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_PATH, 'buzzer/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -120,6 +127,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'buzzer',
+    'djcelery',
 )
 
 # A sample logging configuration. The only tangible logging
