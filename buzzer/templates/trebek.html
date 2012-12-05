@@ -1,1 +1,28 @@
+{% extends "base.html" %}
+
+{% block scriptsTag %}
+{% include "trebekScripts.js" %}
+{% endblock scriptsTag %}
+
+{% block body %}
+
 <div style="font-weight:bold">Suck it, Trebek</div>
+<button data-bind="click: function(){$root.clearBuzzes(); $root.setStatus('Clear')}">Clear Buzzes</button>
+<button data-bind="click: function(){$root.setStatus('Open')}">Open for Buzzes</button>
+<button data-bind="click: function(){$root.setStatus('Closed')}">Close Buzzes</button>
+
+<h1>Players</h1>
+<div data-bind="foreach: players">
+  <div data-bind="text: name() + ': ' + score()"></div>
+</div>
+
+<h1>Buzz List</h1>
+<div data-bind="foreach: buzzes">
+  <div data-bind="text: $data"></div>
+</div>
+
+<h1>Status</h1>
+<div data-bind="text: status"></div>
+
+
+{% endblock body %}

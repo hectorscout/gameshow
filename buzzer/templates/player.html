@@ -7,8 +7,8 @@
 {% block body %}
 
 <!-- ko if:  !id() -->
-<div><input id="nameInput" type="text"></div>
-<div><button data-bind="click: $root.register">Let's Go!</button></div>
+<div><input id="nameInput" type="text" data-bind="disable: waiting"></div>
+<div><button data-bind="{click: $root.register, disable: waiting}">Let's Go!</button></div>
 <!-- /ko -->
 
 <!-- ko if: id() -->
@@ -16,4 +16,9 @@
 <!-- /ko -->
 
 <div data-bind="{visible: name, text:'You are ' + name() + '.'}"></div>
+
+<!-- ko if: id() -->
+<div><button data-bind="{click: $root.logout}">Log Out</button></div>
+<!-- /ko -->
+
 {% endblock body %}

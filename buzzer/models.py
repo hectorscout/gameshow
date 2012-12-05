@@ -13,3 +13,10 @@ class Player(models.Model):
 
     def __unicode__(self):
         return '%s: %s' % (self.name, self.score)
+
+class Buzz(models.Model):
+    name = models.CharField(max_length=128)
+    retrieved = models.BooleanField()
+    def __unicode__(self):
+        return '%s: %s' % (self.name, self.retrieved and 'Retrieved' or 'New')
+

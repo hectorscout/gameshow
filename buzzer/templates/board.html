@@ -8,7 +8,15 @@
 
 <h1>Players</h1>
 <div data-bind="foreach: players">
-  <div data-bind="text: name + ': ' + score"></div>
+  <div data-bind="text: name() + ': ' + score()"></div>
 </div>
+
+<h1>Buzz List</h1>
+<div data-bind="foreach: buzzes">
+  <div data-bind="text: $data"></div>
+</div>
+
+<h1>Status</h1>
+<div data-bind="text: status"></div>
 
 {% endblock body %}

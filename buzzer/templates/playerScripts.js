@@ -7,8 +7,8 @@
 function PlayerViewModel() {
     var self = this;
 
-    self.name = ko.observable('');
-    self.id = ko.observable('');
+    self.name = ko.observable('{{name}}');
+    self.id = ko.observable('{{id}}');
     self.waiting = ko.observable(false);
 
     self.register = function() {
@@ -30,8 +30,15 @@ function PlayerViewModel() {
     self.buzz = function() {
 	self.waiting(true);
 	$.post("buzz",
-               {id:self.id()});
+               {name:self.name()});
 	setTimeout(function(){self.waiting(false)}, 5000);
+    }
+
+    self.logout = function() {
+	$.post("logout",
+               {id:self.id()});
+	self.id('');
+	self.name('');
     }
     
 }
