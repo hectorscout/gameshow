@@ -5,29 +5,46 @@ from django.http import HttpResponse
 from buzzer.models import Player, Setting, Buzz
 
 
-## -------------Game Host Views------------
+## -------------Trebek Views------------
 def trebek(request):
     return render_to_response('trebek.html')
+
+def setSetting(request):
+    name =  request.REQUEST['name']
+    value = request.REQUEST['value']
+    try:
+        setting = Setting.objects.filter(name=name)[0]
+    except IndexError:
+        setting = Setting(name=name)
+
+    setting.value = value
+    setting.save()
+    return HttpResponse('')
+
+def getSettings(request):
+    settingDict = {}
+    for setting in Setting.objects.all():
+        settingDict[setting.name] = setting.value
+    return HttpResponse(simplejson.dumps(settingDict))
 
 def clearBuzzes(request):
     Buzz.objects.all().delete()
 
     return HttpResponse('Deleted')
 
-def setStatus(request):
-    newStatus = request.REQUEST['status']
-    try:
-        status = Setting.objects.filter(name="status")[0]
-    except IndexError:
-        status = Setting(name="status")
-
-    status.value = newStatus
-    status.save()
-    return HttpResponse('')
-
 def getBuzzes(request):
     buzzes = [x.name for x in Buzz.objects.all().order_by('id')]
     return HttpResponse(simplejson.dumps(buzzes))
+
+def updatePlayer(request):
+    name = request.REQUEST['name']
+    score = request.REQUEST['score'] or 0
+
+    player = Player.objects.filter(name=name)[0]
+    player.score = score
+    player.save()
+    
+    return HttpResponse('')
 
 ## -------------Board Views------------
 def board(request):
@@ -39,14 +56,19 @@ def players(request):
 
 def getBuzz(request):
     buzz = False
-    while(not buzz):
+    i = 0
+    while(not buzz and i < 50):
         try:
-            buzz = Buzz.objects.filter(retrieved=False).order_by('id')[0]
+            buzz = Buzz.objects.all().filter(retrieved=False).order_by('id')[0]
             buzz.retrieved = True
             buzz.save()
         except IndexError:
             time.sleep(.1)
-    return HttpResponse(simplejson.dumps(buzz.name))
+            i = i + 1
+    if buzz:
+        return HttpResponse(simplejson.dumps(buzz.name))
+    else:
+        return HttpResponse(simplejson.dumps(False))
 
 def getStatus(request):
     currentStatus = request.REQUEST['currentStatus']

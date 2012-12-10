@@ -7,13 +7,13 @@
 {% block body %}
 
 <div style="font-weight:bold">Suck it, Trebek</div>
-<button data-bind="click: function(){$root.clearBuzzes(); $root.setStatus('Clear')}">Clear Buzzes</button>
-<button data-bind="click: function(){$root.setStatus('Open')}">Open for Buzzes</button>
-<button data-bind="click: function(){$root.setStatus('Closed')}">Close Buzzes</button>
+<button data-bind="visible: $root.settings.status() == 'Closed', click: function(){$root.settings.status('Clear')}">Clear Buzzes</button>
+<button data-bind="visible: $root.settings.status() == 'Clear', click: function(){$root.settings.status('Open')}">Open for Buzzes</button>
+<button data-bind="visible: $root.settings.status() == 'Open', click: function(){$root.settings.status('Closed')}">Close Buzzes</button>
 
 <h1>Players</h1>
 <div data-bind="foreach: players">
-  <div data-bind="text: name() + ': ' + score()"></div>
+  <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.editPlayer"><span class="ui-button-text" data-bind="text: $data.displayString"></span></button>
 </div>
 
 <h1>Buzz List</h1>
@@ -21,8 +21,22 @@
   <div data-bind="text: $data"></div>
 </div>
 
-<h1>Status</h1>
-<div data-bind="text: status"></div>
+<!--h1>Status</h1>
+<div data-bind="text: settings.status()"></div-->
 
+<button style="margin-top: 50px" data-bind="click: $root.editSettings">Settings</button>
 
+<div id="gameSettings" style="display:none">
+  <div>Time to answer: <input style="width: 50px" data-bind="value: $root.settings.answerTimeout, valueUpdate: 'keyup'"> seconds (zero for no timeout)</div>
+  <div>Buzz mode: <select data-bind="value: $root.settings.buzzMode"><option value="single">One buzzer</option><option value="multi">Multiple buzzers</option></select></div>
+</div>
+
+<div id="editPlayer" style="display:none">
+  <!-- ko with: selectedPlayer -->
+  <div data-bind="text: name"></div>
+  <button data-bind="click: function(){$data.addToScore(50)}">+50</button>
+  <button data-bind="click: function(){$data.addToScore(50)}">+100</button>
+  <input style="width:100px" data-bind="value: $data.score">
+  <!-- /ko -->
+</div>
 {% endblock body %}

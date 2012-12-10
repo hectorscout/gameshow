@@ -1,6 +1,9 @@
 <script type="text/javascript">
+    var buzzSound;
     $(document).ready(function() {
 	ko.applyBindings(new BoardViewModel());
+	buzzSound = document.createElement('audio');
+	buzzSound.setAttribute('src', 'http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_jumpsmall.wav');
     });
 
 
@@ -27,8 +30,12 @@ function BoardViewModel() {
     function getBuzz() {
 	$.ajax({url:"getBuzz",
 		success:function(response) {
-		    if (response)
+		    if (response) {
 			self.buzzes.push(response);
+			if (self.buzzes.length == 1)
+			    buzzSound.play();
+		    }
+		    
 		},
 		complete:function() {
 		    getBuzz();
@@ -45,7 +52,8 @@ function BoardViewModel() {
 		    self.status(response);
 		},
 		complete:function() {
-		    getStatus();
+		   // getStatus();
+		    
 		},
 		dataType: 'json'
 	       });
